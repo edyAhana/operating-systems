@@ -39,5 +39,12 @@ kill -TERM "$(cat /tmp/disk-monitor-$(id -u).pid)"
 предыдущему процессу `SIGTERM` перед запуском нового демона.
 Если новый конфиг не удалось загрузить по `SIGHUP`, старые наблюдения сохраняются.
 
-Чтобы направлять `LOG_LOCAL0` в отдельный файл, установите правило из
-`rsyslog/30-disk-monitor.conf` в `/etc/rsyslog.d/` и перезапустите rsyslog.
+Чтобы направлять `LOG_LOCAL0` в отдельный файл, установите правило rsyslog:
+
+```sh
+sudo install -m 644 rsyslog/30-disk-monitor.conf /etc/rsyslog.d/
+sudo rsyslogd -N1
+sudo systemctl restart rsyslog
+```
+
+После этого сообщения демона будут доступны в `/var/log/disk-monitor.log`.
